@@ -1,12 +1,14 @@
+
 import React, { useState } from 'react';
 import { View } from '../types';
 import { useCart } from '../context/CartContext';
 import { useSettings } from '../context/SettingsContext';
+import { LockClosedIcon } from './icons';
 
 const InputField = ({ id, label, ...props }: { id: string; label: string; [key: string]: any }) => (
   <div>
-    <label htmlFor={id} className="block text-sm font-medium text-metal-300 mb-1">{label}</label>
-    <input id={id} {...props} className="w-full bg-navy border border-metal-500 text-white rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-brand-primary" />
+    <label htmlFor={id} className="block text-sm font-medium text-text-secondary mb-1">{label}</label>
+    <input id={id} {...props} className="w-full bg-background border border-border-color text-text-primary rounded-md p-2.5 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-brand-primary" />
   </div>
 );
 
@@ -41,12 +43,6 @@ const CheckoutView: React.FC<CheckoutViewProps> = ({ onNavigate }) => {
     
     // --- BACKEND INTEGRATION POINT ---
     // This is where you would integrate a real payment gateway.
-    // 1. Send `formState` and cart contents to your backend server.
-    // 2. Your backend processes the payment with a provider like Stripe or PayPal.
-    // 3. If payment is successful, your backend should confirm.
-    // 4. On confirmation, clear the cart and navigate to the confirmation page.
-    // 5. If payment fails, show an error message to the user.
-    // The code below is the current simulation.
     console.log('Simulating payment with data:', formState);
     dispatch({ type: 'CLEAR_CART' });
     onNavigate('confirmation');
@@ -54,13 +50,13 @@ const CheckoutView: React.FC<CheckoutViewProps> = ({ onNavigate }) => {
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
-      <h1 className="text-4xl font-bold text-white mb-8">{t('checkout_title', 'Checkout')}</h1>
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        <div className="bg-navy-light p-8 rounded-lg shadow-xl space-y-6">
-          <h2 className="text-2xl font-bold text-white border-b-2 border-brand-primary pb-2">{t('contact_shipping_info', 'Información de Contacto y Envío')}</h2>
-          <div className="flex gap-4 bg-navy p-3 rounded-lg">
-            <button type="button" onClick={() => setIsGuest(true)} className={`w-1/2 py-2 rounded-md font-semibold transition-colors ${isGuest ? 'bg-brand-primary text-white' : 'bg-transparent text-metal-300 hover:bg-navy-dark'}`}>{t('guest_checkout', 'Comprar como Invitado')}</button>
-            <button type="button" onClick={() => setIsGuest(false)} className={`w-1/2 py-2 rounded-md font-semibold transition-colors ${!isGuest ? 'bg-brand-primary text-white' : 'bg-transparent text-metal-300 hover:bg-navy-dark'}`}>{t('login', 'Iniciar Sesión')}</button>
+      <h1 className="text-4xl font-bold text-text-primary mb-8">{t('checkout_title', 'Checkout')}</h1>
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-5 gap-12">
+        <div className="lg:col-span-3 bg-background border border-border-color p-8 rounded-lg shadow-sm space-y-6">
+          <h2 className="text-2xl font-bold text-text-primary border-b-2 border-border-color pb-3">{t('contact_shipping_info', 'Información de Contacto y Envío')}</h2>
+          <div className="flex gap-2 bg-panel p-2 rounded-lg">
+            <button type="button" onClick={() => setIsGuest(true)} className={`w-1/2 py-2 rounded-md font-semibold transition-colors ${isGuest ? 'bg-brand-primary text-white shadow' : 'bg-transparent text-text-secondary hover:bg-gray-200'}`}>{t('guest_checkout', 'Comprar como Invitado')}</button>
+            <button type="button" onClick={() => setIsGuest(false)} className={`w-1/2 py-2 rounded-md font-semibold transition-colors ${!isGuest ? 'bg-brand-primary text-white shadow' : 'bg-transparent text-text-secondary hover:bg-gray-200'}`}>{t('login', 'Iniciar Sesión')}</button>
           </div>
           
           <InputField id="email" name="email" label={t('email', 'Correo Electrónico')} type="email" value={formState.email} onChange={handleInputChange} required />
@@ -75,9 +71,9 @@ const CheckoutView: React.FC<CheckoutViewProps> = ({ onNavigate }) => {
           </div>
         </div>
 
-        <div className="bg-navy-light p-8 rounded-lg shadow-xl space-y-6">
-          <h2 className="text-2xl font-bold text-white border-b-2 border-brand-primary pb-2">{t('payment_billing', 'Pago y Facturación')}</h2>
-          <p className="text-metal-400 text-sm">{t('simulation_notice', 'Esta es una simulación. No introduzcas datos reales.')}</p>
+        <div className="lg:col-span-2 bg-background border border-border-color p-8 rounded-lg shadow-sm space-y-6 h-fit">
+          <h2 className="text-2xl font-bold text-text-primary border-b-2 border-border-color pb-3">{t('payment_billing', 'Pago y Facturación')}</h2>
+          <p className="text-text-secondary text-sm">{t('simulation_notice', 'Esta es una simulación. No introduzcas datos reales.')}</p>
           <InputField id="cardName" name="cardName" label={t('card_name', 'Nombre en la Tarjeta')} type="text" value={formState.cardName} onChange={handleInputChange} required />
           <InputField id="cardNumber" name="cardNumber" label={t('card_number', 'Número de Tarjeta')} type="text" placeholder="**** **** **** ****" value={formState.cardNumber} onChange={handleInputChange} required />
           <div className="grid grid-cols-2 gap-4">
@@ -85,7 +81,8 @@ const CheckoutView: React.FC<CheckoutViewProps> = ({ onNavigate }) => {
             <InputField id="cardCVC" name="cardCVC" label={t('card_cvc', 'CVC')} type="text" placeholder="***" value={formState.cardCVC} onChange={handleInputChange} required />
           </div>
           <div className="pt-4">
-            <button type="submit" className="w-full bg-brand-primary text-white font-bold py-3 text-lg rounded-md hover:bg-orange-500 transition-colors">
+            <button type="submit" className="w-full bg-success text-white font-bold py-3 text-lg rounded-md hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
+              <LockClosedIcon className="w-5 h-5"/>
               {t('pay_order', 'Pagar y Realizar Pedido')}
             </button>
           </div>

@@ -20,27 +20,27 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   };
 
   return (
-    <div className="bg-navy-light rounded-lg overflow-hidden shadow-lg border border-navy hover:border-brand-primary transition-all duration-300 flex flex-col relative">
+    <div className="bg-background rounded-lg overflow-hidden shadow-md border border-border-color hover:shadow-xl transition-all duration-300 flex flex-col relative group">
       {isOutOfStock && (
-        <div className="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-md z-10">
+        <div className="absolute top-3 right-3 bg-danger text-white text-xs font-bold px-2 py-1 rounded z-10">
           {t('agotado', 'Agotado')}
         </div>
       )}
-      <div className="relative">
-        <img className={`w-full h-48 object-cover ${isOutOfStock ? 'filter grayscale' : ''}`} src={product.imageUrl} alt={product.name} />
+      <div className="relative overflow-hidden">
+        <img className={`w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300 ${isOutOfStock ? 'filter grayscale' : ''}`} src={product.imageUrl} alt={product.name} />
       </div>
       <div className="p-4 flex flex-col flex-grow">
-        <h3 className="text-lg font-bold text-white" title={t(`${product.sku}_name`, product.name)}>
+        <h3 className="text-lg font-semibold text-text-primary leading-tight" title={t(`${product.sku}_name`, product.name)}>
           {t(`${product.sku}_name`, product.name)}
         </h3>
-        <p className="text-sm text-metal-400 mb-2">SKU: {product.sku}</p>
-        <p className="text-xs text-metal-300 flex-grow mb-4">{t(`${product.sku}_desc`, product.description)}</p>
+        <p className="text-sm text-text-secondary mb-2">SKU: {product.sku}</p>
+        <p className="text-sm text-text-secondary flex-grow mb-4">{t(`${product.sku}_desc`, product.description)}</p>
         <div className="mt-auto flex justify-between items-center">
-          <p className="text-2xl font-semibold text-brand-primary">{formatCurrency(product.price)}</p>
+          <p className="text-2xl font-bold text-text-primary">{formatCurrency(product.price)}</p>
           <button
             onClick={handleAddToCart}
             disabled={isOutOfStock}
-            className="bg-brand-secondary text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-800 transition-colors disabled:bg-metal-500 disabled:cursor-not-allowed"
+            className="bg-brand-primary text-white font-semibold py-2 px-4 rounded-md hover:bg-brand-primary-hover transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
           >
             {isOutOfStock ? t('agotado', 'Agotado') : t('agregar', 'Agregar')}
           </button>

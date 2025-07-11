@@ -17,13 +17,6 @@ const AppContent: React.FC = () => {
   // --- BACKEND INTEGRATION POINT ---
   // Currently, products are loaded from a static file.
   // To connect to a real inventory system, replace this with an API call.
-  // Example:
-  // const [allProducts, setAllProducts] = useState<Product[]>([]);
-  // useEffect(() => {
-  //   fetch('https://your-api.com/products')
-  //     .then(res => res.json())
-  //     .then(data => setAllProducts(data));
-  // }, []);
   const [allProducts] = useState<Product[]>(PRODUCTS_DATA);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(allProducts);
   const [selectedVehicle, setSelectedVehicle] = useState<SelectedVehicle | null>(null);
@@ -37,7 +30,7 @@ const AppContent: React.FC = () => {
     if (searchQuery) {
       const lowercasedQuery = searchQuery.toLowerCase();
       products = products.filter(p => 
-        p.name.toLowerCase().includes(lowercasedQuery) || 
+        t(`${p.sku}_name`, p.name).toLowerCase().includes(lowercasedQuery) ||
         p.sku.toLowerCase().includes(lowercasedQuery)
       );
     }
@@ -55,7 +48,7 @@ const AppContent: React.FC = () => {
     }
 
     setFilteredProducts(products);
-  }, [allProducts, searchQuery, selectedVehicle]);
+  }, [allProducts, searchQuery, selectedVehicle, t]);
 
   useEffect(() => {
     filterProducts();
@@ -89,13 +82,13 @@ const AppContent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-navy-dark font-sans flex flex-col">
+    <div className="min-h-screen bg-subtle font-sans flex flex-col">
       <Header onNavigate={handleNavigate} />
-      <div className="flex-grow py-8">
+      <div className="flex-grow py-8 md:py-12">
         {renderView()}
       </div>
-      <footer className="bg-navy-dark mt-auto py-8 border-t border-navy">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-metal-400">
+      <footer className="bg-background mt-auto py-8 border-t border-border-color">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-text-secondary">
           <p>&copy; {new Date().getFullYear()} {t('copyright', 'Apex Auto. Todos los derechos reservados.')}</p>
           <p className="text-sm mt-1">{t('demo', 'Una demostración de e-commerce automotriz creada con React y Tailwind CSS.')}</p>
         </div>

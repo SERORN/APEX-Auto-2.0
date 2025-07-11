@@ -48,15 +48,15 @@ const VehicleSelector: React.FC<VehicleSelectorProps> = ({ onVehicleSelect, sele
 
   if (selectedVehicle) {
     return (
-      <div className="bg-navy-light p-4 rounded-lg flex items-center justify-between shadow-lg">
+      <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg flex items-center justify-between shadow-sm">
         <div className="flex items-center gap-4">
           <CarIcon className="w-8 h-8 text-brand-primary" />
           <div>
-            <p className="font-bold text-lg text-white">{`${selectedVehicle.brand} ${selectedVehicle.model}`}</p>
-            <p className="text-sm text-metal-300">{`${t('vehiculo_seleccionado', 'Tu Vehículo')}: ${selectedVehicle.year} - ${selectedVehicle.version}`}</p>
+            <p className="font-bold text-lg text-blue-900">{`${selectedVehicle.brand} ${selectedVehicle.model}`}</p>
+            <p className="text-sm text-blue-800">{`${t('vehiculo_seleccionado', 'Tu Vehículo')}: ${selectedVehicle.year} - ${selectedVehicle.version}`}</p>
           </div>
         </div>
-        <button onClick={handleReset} className="bg-red-500 hover:bg-red-600 text-white font-bold p-2 rounded-full transition-colors duration-200">
+        <button onClick={handleReset} className="text-danger hover:bg-red-100 p-2 rounded-full transition-colors duration-200">
           <XIcon className="w-5 h-5" />
         </button>
       </div>
@@ -64,46 +64,46 @@ const VehicleSelector: React.FC<VehicleSelectorProps> = ({ onVehicleSelect, sele
   }
 
   return (
-    <div className="bg-navy-light p-6 rounded-lg shadow-2xl border border-navy">
-      <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2"><CarIcon /> {t('find_parts_title', 'Encuentra Partes para tu Vehículo')}</h2>
+    <div className="bg-background p-6 rounded-lg shadow-md border border-border-color">
+      <h2 className="text-xl font-bold text-text-primary mb-4 flex items-center gap-2"><CarIcon className="text-brand-primary"/> {t('find_parts_title', 'Encuentra Partes para tu Vehículo')}</h2>
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
         {/* Select Brand */}
         <div className="relative">
-          <select value={brand} onChange={e => { setBrand(e.target.value); setModel(''); setYear(''); setVersion(''); }} className="w-full bg-navy border border-metal-500 text-white rounded-md p-3 appearance-none focus:outline-none focus:ring-2 focus:ring-brand-primary">
+          <select value={brand} onChange={e => { setBrand(e.target.value); setModel(''); setYear(''); setVersion(''); }} className="w-full bg-white border border-border-color text-text-primary rounded-md p-3 appearance-none focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-brand-primary">
             <option value="">{t('marca', 'Marca')}</option>
             {VEHICLE_DATA.map(v => <option key={v.brand} value={v.brand}>{v.brand}</option>)}
           </select>
-          <ChevronDownIcon className="w-5 h-5 text-metal-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"/>
+          <ChevronDownIcon className="w-5 h-5 text-text-secondary absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"/>
         </div>
 
         {/* Select Model */}
         <div className="relative">
-          <select value={model} onChange={e => { setModel(e.target.value); setYear(''); setVersion(''); }} disabled={!brand} className="w-full bg-navy border border-metal-500 text-white rounded-md p-3 appearance-none focus:outline-none focus:ring-2 focus:ring-brand-primary disabled:opacity-50 disabled:cursor-not-allowed">
+          <select value={model} onChange={e => { setModel(e.target.value); setYear(''); setVersion(''); }} disabled={!brand} className="w-full bg-white border border-border-color text-text-primary rounded-md p-3 appearance-none focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-brand-primary disabled:opacity-50 disabled:cursor-not-allowed">
             <option value="">{t('modelo', 'Modelo')}</option>
             {models.map(m => <option key={m.name} value={m.name}>{m.name}</option>)}
           </select>
-          <ChevronDownIcon className="w-5 h-5 text-metal-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"/>
+          <ChevronDownIcon className="w-5 h-5 text-text-secondary absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"/>
         </div>
 
         {/* Select Year */}
         <div className="relative">
-          <select value={year} onChange={e => setYear(e.target.value)} disabled={!model} className="w-full bg-navy border border-metal-500 text-white rounded-md p-3 appearance-none focus:outline-none focus:ring-2 focus:ring-brand-primary disabled:opacity-50 disabled:cursor-not-allowed">
+          <select value={year} onChange={e => setYear(e.target.value)} disabled={!model} className="w-full bg-white border border-border-color text-text-primary rounded-md p-3 appearance-none focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-brand-primary disabled:opacity-50 disabled:cursor-not-allowed">
             <option value="">{t('ano', 'Año')}</option>
             {years.map(y => <option key={y} value={y}>{y}</option>)}
           </select>
-          <ChevronDownIcon className="w-5 h-5 text-metal-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"/>
+          <ChevronDownIcon className="w-5 h-5 text-text-secondary absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"/>
         </div>
 
         {/* Select Version */}
         <div className="relative">
-          <select value={version} onChange={e => setVersion(e.target.value)} disabled={!year} className="w-full bg-navy border border-metal-500 text-white rounded-md p-3 appearance-none focus:outline-none focus:ring-2 focus:ring-brand-primary disabled:opacity-50 disabled:cursor-not-allowed">
+          <select value={version} onChange={e => setVersion(e.target.value)} disabled={!year} className="w-full bg-white border border-border-color text-text-primary rounded-md p-3 appearance-none focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-brand-primary disabled:opacity-50 disabled:cursor-not-allowed">
             <option value="">{t('version', 'Versión')}</option>
             {versions.map(v => <option key={v} value={v}>{v}</option>)}
           </select>
-          <ChevronDownIcon className="w-5 h-5 text-metal-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"/>
+          <ChevronDownIcon className="w-5 h-5 text-text-secondary absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"/>
         </div>
         
-        <button onClick={handleFindParts} disabled={!brand || !model || !year || !version} className="bg-brand-primary text-white font-bold rounded-md hover:bg-orange-500 transition-colors duration-300 disabled:bg-metal-500 disabled:cursor-not-allowed">
+        <button onClick={handleFindParts} disabled={!brand || !model || !year || !version} className="bg-brand-primary text-white font-bold rounded-md hover:bg-brand-primary-hover transition-colors duration-300 disabled:bg-gray-300 disabled:cursor-not-allowed">
           {t('buscar', 'Buscar')}
         </button>
       </div>

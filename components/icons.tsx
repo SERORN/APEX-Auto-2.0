@@ -43,3 +43,9 @@ export const GlobeIcon = ({ className = 'w-6 h-6' }: { className?: string }) => 
     <path strokeLinecap="round" strokeLinejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2h10a2 2 0 002-2v-1a2 2 0 012-2h1.945M7.707 4.5h.01m-2.833 2.828a17.923 17.923 0 0112.25 0m-12.25 0a17.963 17.963 0 01-2.228 5.995M16.293 4.5h.01m2.834 2.828a17.923 17.923 0 00-12.25 0m12.25 0a17.963 17.963 0 002.228 5.995M12 21a9 9 0 110-18 9 9 0 010 18z" />
   </svg>
 );
+
+export const LockClosedIcon = ({ className = 'w-5 h-5' }: { className?: string }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className={className}>
+    <path fillRule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clipRule="evenodd" />
+  </svg>
+);
