@@ -10,6 +10,8 @@ import HomeView from './components/HomeView';
 import CartView from './components/CartView';
 import CheckoutView from './components/CheckoutView';
 import ConfirmationView from './components/ConfirmationView';
+import { Toaster } from './components/Toaster';
+import { TooltipProvider } from './components/Tooltip';
 
 const AppContent: React.FC = () => {
   const [view, setView] = useState<View>('home');
@@ -101,7 +103,10 @@ const App: React.FC = () => {
   return (
     <SettingsProvider>
       <CartProvider>
-        <AppContent />
+        <TooltipProvider>
+          <AppContent />
+          <Toaster />
+        </TooltipProvider>
       </CartProvider>
     </SettingsProvider>
   );
