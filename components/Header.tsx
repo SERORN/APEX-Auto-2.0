@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+
+import React from 'react';
 import { useCart } from '../context/CartContext';
 import { useSettings } from '../context/SettingsContext';
-import { ShoppingCartIcon, UserIcon } from './icons';
+import { ShoppingCartIcon, UserIcon, GlobeIcon } from './icons';
 import { View, Language, Currency } from '../types';
-import { supabase } from '../lib/supabaseClient';
-import { useRouter } from 'next/router';
 
 interface HeaderProps {
   onNavigate: (view: View) => void;
@@ -14,27 +13,6 @@ const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
   const { state } = useCart();
   const { language, setLanguage, currency, setCurrency, t } = useSettings();
   const itemCount = state.items.reduce((total, item) => total + item.quantity, 0);
-  const [session, setSession] = useState<any>(null);
-  const router = useRouter();
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    return () => {
-      listener.subscription.unsubscribe();
-    };
-  }, []);
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push('/login');
-  };
 
   const LanguageButton = ({ lang, label }: { lang: Language, label: string }) => (
     <button
@@ -67,7 +45,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
               AP<span className="text-brand-primary">X</span>
             </h1>
           </div>
-
+          
           {/* Right side actions */}
           <div className="flex items-center gap-4 md:gap-6">
             <div className="hidden md:flex items-center gap-1 bg-subtle p-1 rounded-lg">
@@ -79,24 +57,10 @@ const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
               <CurrencyButton curr="usd" label="USD" />
             </div>
 
-            {session ? (
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-2 text-red-500 hover:text-red-700 transition-colors duration-200"
-              >
-                <UserIcon className="h-6 w-6" />
-                <span className="hidden md:block">{t('logout', 'Cerrar sesión')}</span>
-              </button>
-            ) : (
-              <button
-                onClick={() => router.push('/login')}
-                className="flex items-center gap-2 text-text-secondary hover:text-brand-primary transition-colors duration-200"
-              >
-                <UserIcon className="h-6 w-6" />
-                <span className="hidden md:block">{t('mi_cuenta', 'Mi Cuenta')}</span>
-              </button>
-            )}
-
+            <button className="flex items-center gap-2 text-text-secondary hover:text-brand-primary transition-colors duration-200">
+              <UserIcon className="h-6 w-6" />
+              <span className="hidden md:block">{t('mi_cuenta', 'Mi Cuenta')}</span>
+            </button>
             <button
               onClick={() => onNavigate('cart')}
               className="relative flex items-center gap-2 text-text-secondary hover:text-brand-primary transition-colors duration-200"
@@ -111,18 +75,17 @@ const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
             </button>
           </div>
         </div>
-
-        {/* Mobile settings */}
-        <div className="md:hidden flex items-center justify-center gap-4 pb-3">
-          <div className="flex items-center gap-1 bg-subtle p-1 rounded-lg">
-            <LanguageButton lang="es" label="ES" />
-            <LanguageButton lang="en" label="EN" />
+         {/* Mobile settings */}
+         <div className="md:hidden flex items-center justify-center gap-4 pb-3">
+            <div className="flex items-center gap-1 bg-subtle p-1 rounded-lg">
+              <LanguageButton lang="es" label="ES" />
+              <LanguageButton lang="en" label="EN" />
+            </div>
+            <div className="flex items-center gap-1 bg-subtle p-1 rounded-lg">
+              <CurrencyButton curr="mxn" label="MXN" />
+              <CurrencyButton curr="usd"label="USD" />
+            </div>
           </div>
-          <div className="flex items-center gap-1 bg-subtle p-1 rounded-lg">
-            <CurrencyButton curr="mxn" label="MXN" />
-            <CurrencyButton curr="usd" label="USD" />
-          </div>
-        </div>
       </div>
     </header>
   );

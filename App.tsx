@@ -1,63 +1,45 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/router';
 import { Product, SelectedVehicle, View } from './types';
 import { CartProvider } from './context/CartContext';
 import { SettingsProvider, useSettings } from './context/SettingsContext';
-import { supabase } from './lib/supabaseClient';
+import { PRODUCTS_DATA } from './data/products';
 
-import LoginView from './components/LoginView';
 import Header from './components/Header';
 import HomeView from './components/HomeView';
 import CartView from './components/CartView';
 import CheckoutView from './components/CheckoutView';
 import ConfirmationView from './components/ConfirmationView';
 
-import { PRODUCTS_DATA } from './data/products';
-
 const AppContent: React.FC = () => {
-  const router = useRouter();
   const [view, setView] = useState<View>('home');
 
-  const [allProducts, setAllProducts] = useState<Product[]>(PRODUCTS_DATA);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>(allProducts);
+  // --- BACKEND INTEGRATION POINT ---
+  // Currently, products are loaded from a static file.
+  // To connect to a real inventory system, replace this with an API call.
+  const [allProducts] = useState<Product[]>(PRODUCTS_DATA);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>(PRODUCTS_DATA);
   const [selectedVehicle, setSelectedVehicle] = useState<SelectedVehicle | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const { t } = useSettings();
 
-  const [session, setSession] = useState<any>(null);
-
-  // Obtener sesión actual al cargar
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    return () => {
-      listener.subscription.unsubscribe();
-    };
-  }, []);
-
   const filterProducts = useCallback(() => {
     let products = allProducts;
 
-    // Filtrar por búsqueda
+    // Filter by search query
     if (searchQuery) {
       const lowercasedQuery = searchQuery.toLowerCase();
-      products = products.filter(p =>
+      products = products.filter((p) => 
         t(`${p.sku}_name`, p.name).toLowerCase().includes(lowercasedQuery) ||
         p.sku.toLowerCase().includes(lowercasedQuery)
       );
     }
 
-    // Filtrar por vehículo
+    // Filter by selected vehicle
     if (selectedVehicle) {
-      products = products.filter(p => {
-        if (p.compatibility.length === 0) return true; // universales
-        return p.compatibility.some(comp =>
+      products = products.filter((p) => {
+        if (!p.compatibility || p.compatibility.length === 0) return true; // Universal parts
+        return p.compatibility.some((comp: { brand: string; model: string; years: number[] }) => 
           comp.brand === selectedVehicle.brand &&
           comp.model === selectedVehicle.model &&
           comp.years.includes(parseInt(selectedVehicle.year, 10))
@@ -78,25 +60,7 @@ const AppContent: React.FC = () => {
   };
 
   const renderView = () => {
-    const isPrivate = ['cart', 'checkout', 'confirmation'].includes(view);
-
-    if (!session && isPrivate) {
-      return (
-        <div className="text-center py-20">
-          <p className="text-xl font-semibold mb-4">Debes iniciar sesión para continuar con tu compra.</p>
-          <button
-            onClick={() => setView('login')}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-          >
-            Iniciar sesión
-          </button>
-        </div>
-      );
-    }
-
     switch (view) {
-      case 'login':
-        return <LoginView />;
       case 'cart':
         return <CartView onNavigate={handleNavigate} />;
       case 'checkout':
