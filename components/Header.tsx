@@ -5,9 +5,9 @@ import { useSettings } from '../context/SettingsContext';
 import { ShoppingCartIcon, UserIcon } from './icons';
 import { Language, Currency } from '../types';
 
-import { AppView } from '../App';
+import { View } from '../types';
 interface HeaderProps {
-  onNavigate: (view: AppView) => void;
+  onNavigate: (view: View) => void;
   user?: any;
   onLogout?: () => void;
 }

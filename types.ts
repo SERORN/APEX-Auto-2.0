@@ -37,7 +37,7 @@ export interface SelectedVehicle {
   version: string;
 }
 
-export type View = 'home' | 'cart' | 'checkout' | 'confirmation';
+export type View = 'home' | 'cart' | 'checkout' | 'confirmation' | 'login';
 
 export type Language = 'es' | 'en';
 export type Currency = 'mxn' | 'usd';
