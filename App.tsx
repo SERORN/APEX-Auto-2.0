@@ -1,155 +1,59 @@
-import { supabase } from './lib/supabaseClient';
+import React from 'react';
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { Product, SelectedVehicle } from './types';
-import { CartProvider } from './context/CartContext';
-import { SettingsProvider, useSettings } from './context/SettingsContext';
-import { PRODUCTS_DATA } from './data/products';
-
-import Header from './components/Header';
-import HomeView from './components/HomeView';
-import LoginPage from './components/LoginPage';
-import SignupPage from './components/SignupPage';
-import UserPanel from './components/UserPanel';
-import SupplierPanel from './components/SupplierPanel';
-import CartView from './components/CartView';
-import CheckoutView from './components/CheckoutView';
-import ConfirmationView from './components/ConfirmationView';
-
-export type AppView = 'login' | 'signup' | 'user' | 'supplier' | 'home' | 'cart' | 'checkout' | 'confirmation';
-
-interface AppContentProps {
-  user: any;
-  onLogout: () => void;
-}
-
-const AppContent: React.FC<AppContentProps> = ({ user, onLogout }) => {
-  const [view, setView] = useState<AppView>('home');
-  const [allProducts] = useState<Product[]>(PRODUCTS_DATA);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>(allProducts);
-  const [selectedVehicle, setSelectedVehicle] = useState<SelectedVehicle | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const { t } = useSettings();
-
-  // Persistencia de carrito (hook base, integración real en CartContext)
-  useEffect(() => {
-    // TODO: Integrar con CartContext para persistir el carrito en localStorage
-    // Ejemplo: localStorage.setItem('cart', JSON.stringify(cart));
-  }, []);
-
-  // Filtrado de productos
-  const filterProducts = useCallback(() => {
-    let products = allProducts;
-    if (searchQuery) {
-      const lowercasedQuery = searchQuery.toLowerCase();
-      products = products.filter(p =>
-        t(`${p.sku}_name`, p.name).toLowerCase().includes(lowercasedQuery) ||
-        p.sku.toLowerCase().includes(lowercasedQuery)
-      );
-    }
-    if (selectedVehicle) {
-      products = products.filter(p => {
-        if (p.compatibility.length === 0) return true;
-        return p.compatibility.some(comp =>
-          comp.brand === selectedVehicle.brand &&
-          comp.model === selectedVehicle.model &&
-          comp.years.includes(parseInt(selectedVehicle.year, 10))
-        );
-      });
-    }
-    setFilteredProducts(products);
-  }, [allProducts, searchQuery, selectedVehicle, t]);
-
-  useEffect(() => {
-    filterProducts();
-  }, [filterProducts]);
-
-  const handleNavigate = (newView: AppView) => {
-    setView(newView);
-    window.scrollTo(0, 0);
-  };
-
-  // Mensaje para rutas protegidas
-  const requireAuth = (component: React.ReactNode) => {
-    if (!user) {
-      return <div className="text-center py-8 text-red-600">Debes iniciar sesión para acceder a esta sección.</div>;
-    }
-    return component;
-  };
-
-  const renderView = () => {
-    switch (view) {
-      case 'login':
-        return <LoginPage onLogin={() => setView('home')} />;
-      case 'signup':
-        return <SignupPage onSignup={() => setView('login')} />;
-      case 'user':
-        return requireAuth(<UserPanel />);
-      case 'supplier':
-        return requireAuth(<SupplierPanel />);
-      case 'cart':
-        return requireAuth(<CartView onNavigate={handleNavigate} />);
-      case 'checkout':
-        return requireAuth(<CheckoutView onNavigate={handleNavigate} />);
-      case 'confirmation':
-        return <ConfirmationView onNavigate={handleNavigate} />;
-      case 'home':
-      default:
-        return (
-          <HomeView
-            products={filteredProducts}
-            onVehicleSelect={setSelectedVehicle}
-            selectedVehicle={selectedVehicle}
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-          />
-        );
-    }
-  };
-
+const LandingPage = () => {
   return (
-    <div className="min-h-screen bg-subtle font-sans flex flex-col">
-      <Header onNavigate={handleNavigate} user={user} onLogout={onLogout} />
-      <div className="flex-grow py-8 md:py-12">
-        {renderView()}
-      </div>
-      <footer className="bg-background mt-auto py-8 border-t border-border-color">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-text-secondary">
-          <p>&copy; {new Date().getFullYear()} {t('copyright', 'Apex Auto. Todos los derechos reservados.')}</p>
-          <p className="text-sm mt-1">{t('demo', 'Una demostración de e-commerce automotriz creada con React y Tailwind CSS.')}</p>
+    <div className="min-h-screen bg-white text-gray-900 font-sans">
+      <header className="bg-black text-white py-4 shadow-md">
+        <div className="container mx-auto px-4 flex justify-between items-center">
+          <h1 className="text-2xl font-bold tracking-widest">APX</h1>
+          <nav className="space-x-6">
+            <a href="#features" className="hover:text-gray-300">Características</a>
+            <a href="#catalog" className="hover:text-gray-300">Catálogo</a>
+            <a href="#signup" className="hover:text-gray-300">Crear cuenta</a>
+          </nav>
         </div>
+      </header>
+
+      <main className="container mx-auto px-4 py-20 text-center">
+        <h2 className="text-4xl font-extrabold mb-4">La nueva forma de comprar autopartes</h2>
+        <p className="text-lg mb-6">Directo de proveedores y distribuidores. Sin intermediarios. 100% online.</p>
+        <a href="/signup" className="bg-black text-white px-6 py-3 rounded-full text-lg hover:bg-gray-800 transition">Explorar catálogo</a>
+      </main>
+
+      <section id="features" className="bg-gray-100 py-16">
+        <div className="container mx-auto px-4 grid md:grid-cols-3 gap-10 text-left">
+          <div>
+            <h3 className="text-xl font-semibold mb-2">Distribuidores verificados</h3>
+            <p>Confiamos solo en empresas serias y con stock actualizado.</p>
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold mb-2">Compra segura</h3>
+            <p>Pagos protegidos y factura instantánea (CFDI) con validación oficial.</p>
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold mb-2">Precios competitivos</h3>
+            <p>Transparencia en costos y márgenes bajos. Incluye nuestro fee del 10% ya integrado.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="catalog" className="py-16 text-center">
+        <h3 className="text-2xl font-bold mb-4">Catálogo completo</h3>
+        <p className="mb-6">Explora por marca, modelo o tipo de refacción.</p>
+        <a href="/home" className="bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800 transition">Ir al catálogo</a>
+      </section>
+
+      <section id="signup" className="bg-gray-200 py-16 text-center">
+        <h3 className="text-2xl font-bold mb-4">¿Eres distribuidor?</h3>
+        <p className="mb-6">Publica tus productos, recibe cotizaciones, vende al instante.</p>
+        <a href="/signup" className="bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800 transition">Registrarse</a>
+      </section>
+
+      <footer className="bg-black text-white py-4 text-center text-sm">
+        © {new Date().getFullYear()} Apex Auto · Todos los derechos reservados.
       </footer>
     </div>
   );
 };
 
-const App: React.FC = () => {
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const getUser = async () => {
-      const { data } = await supabase.auth.getUser();
-      setUser(data.user);
-      setLoading(false);
-    };
-    getUser();
-  }, []);
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    setUser(null);
-  };
-
-  if (loading) return <div className="text-center py-12">Cargando...</div>;
-
-  return (
-    <SettingsProvider>
-      <CartProvider>
-        <AppContent user={user} onLogout={handleLogout} />
-      </CartProvider>
-    </SettingsProvider>
-  );
-};
-
-export default App;
+export default LandingPage;
