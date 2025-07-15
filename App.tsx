@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LandingPage = () => {
+const App = () => {
   return (
     <div className="min-h-screen bg-white text-gray-900 font-sans">
       <header className="bg-black text-white py-4 shadow-md">
@@ -56,4 +56,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default App;
