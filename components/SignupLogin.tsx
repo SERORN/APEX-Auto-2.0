@@ -159,7 +159,7 @@ const SignupLogin: React.FC = () => {
       </div>
       <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-blue-100 to-blue-300 items-center justify-center text-center p-8">
         <h2 className="text-3xl font-bold text-blue-700 leading-tight">
-          ¡Bienvenido a APX Auto!
+          ¡Bienvenido a APX!
         </h2>
       </div>
     </div>
