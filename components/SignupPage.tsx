@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import AuthGoogleButton from './AuthGoogleButton';
+import AuthMicrosoftButton from './AuthMicrosoftButton';
 import { supabase } from '../lib/supabaseClient';
 
 // Simple i18n hook (replace with your real i18n solution if available)
@@ -129,6 +131,10 @@ const SignupPage: React.FC<{ onSignup: () => void }> = ({ onSignup }) => {
           <div className="flex-grow h-px bg-[#EDF2F7]" />
           <span className="mx-3 text-[#A0AEC0] text-xs">o</span>
           <div className="flex-grow h-px bg-[#EDF2F7]" />
+        </div>
+        <div className="flex flex-col gap-3 mb-4">
+          <AuthGoogleButton />
+          <AuthMicrosoftButton />
         </div>
         <div className="text-center">
           <span className="text-[#A0AEC0] text-sm">{t('signup.login')}</span>{' '}

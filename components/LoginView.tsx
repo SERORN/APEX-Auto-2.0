@@ -1,6 +1,7 @@
-import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { supabase } from '../lib/supabaseClient'
+import { useState } from 'react'
+import { AuthSocialButtons } from './AuthSocialButtons';
 
 const LoginPage = () => {
   const router = useRouter()
@@ -79,6 +80,14 @@ const LoginPage = () => {
         >
           ¿No tienes cuenta? Regístrate
         </button>
+        <div className="my-6">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="flex-1 h-px bg-gray-300" />
+            <span className="text-gray-400 text-xs">o continúa con</span>
+            <span className="flex-1 h-px bg-gray-300" />
+          </div>
+          <AuthSocialButtons />
+        </div>
       </form>
     </div>
   )

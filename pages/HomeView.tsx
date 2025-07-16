@@ -1,10 +1,10 @@
-import React from 'react';
-
-const HomeView = () => (
-  <div className="container mx-auto px-4 py-10">
-    <h2 className="text-3xl font-bold mb-6">Bienvenido al Home</h2>
-    <p>Página principal de la aplicación. (Implementación pendiente)</p>
-  </div>
-);
+const HomeView = () => {
+  return (
+    <div className="text-center">
+      <h2 className="text-4xl font-bold mb-4">La nueva forma de comprar autopartes</h2>
+      <p className="text-lg mb-6">Directo de proveedores y distribuidores. Sin intermediarios. 100% online.</p>
+    </div>
+  );
+};
 
 export default HomeView;

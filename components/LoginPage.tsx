@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { FcGoogle } from 'react-icons/fc';
+import { SiMicrosoft } from 'react-icons/si';
 import { supabase } from '../lib/supabaseClient';
 
 // Simple i18n hook (replace with your real i18n solution if available)
@@ -54,7 +56,7 @@ const LoginPage: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
   };
 
   return (
-    <div className="max-w-sm mx-auto mt-20 p-8 bg-[#F7FAFC] rounded-2xl shadow-lg border border-[#EDF2F7] flex flex-col items-center">
+    <div className="animate-fade-in mx-auto max-w-md px-4 sm:px-6 lg:px-8 py-12 mt-10 bg-[#F7FAFC] rounded-2xl shadow-lg border border-[#EDF2F7] flex flex-col items-center">
       {/* Logo/Icon */}
       <div className="mb-6 flex items-center justify-center w-16 h-16 rounded-full bg-[#EDF2F7]">
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -96,7 +98,7 @@ const LoginPage: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
           </div>
         )}
         <button
-          className="w-full bg-[#2B6CB0] hover:bg-[#3182CE] text-white font-semibold py-3 rounded-lg transition-colors duration-200 text-lg shadow-sm disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-[#2B6CB0]"
+          className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition text-sm sm:text-base font-semibold shadow-sm disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-[#2B6CB0]"
           type="submit"
           disabled={loading}
           aria-busy={loading}
@@ -108,6 +110,42 @@ const LoginPage: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
           <div className="flex-grow h-px bg-[#EDF2F7]" />
           <span className="mx-3 text-[#A0AEC0] text-xs">o</span>
           <div className="flex-grow h-px bg-[#EDF2F7]" />
+        </div>
+        <div className="flex flex-col gap-2 mb-4">
+          <button
+            type="button"
+            onClick={async () => {
+              const redirectTo = import.meta.env.MODE === 'development'
+                ? 'http://localhost:5173/auth/callback'
+                : 'https://apex-auto-2-0.vercel.app/auth/callback';
+              await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: { redirectTo },
+              });
+            }}
+            className="w-full flex items-center justify-center gap-2 border px-4 py-3 rounded-lg hover:bg-gray-100 transition text-sm sm:text-base font-medium text-gray-700"
+            aria-label="Iniciar sesión con Google"
+          >
+            <FcGoogle className="mr-2 h-5 w-5" />
+            Iniciar sesión con Google
+          </button>
+          <button
+            type="button"
+            onClick={async () => {
+              const redirectTo = import.meta.env.MODE === 'development'
+                ? 'http://localhost:5173/auth/callback'
+                : 'https://apex-auto-2-0.vercel.app/auth/callback';
+              await supabase.auth.signInWithOAuth({
+                provider: 'azure',
+                options: { redirectTo },
+              });
+            }}
+            className="w-full flex items-center justify-center gap-2 border px-4 py-3 rounded-lg hover:bg-gray-100 transition text-sm sm:text-base font-medium text-gray-700 mt-2"
+            aria-label="Iniciar sesión con Microsoft"
+          >
+            <SiMicrosoft className="mr-2 h-5 w-5 text-blue-700" />
+            Iniciar sesión con Microsoft
+          </button>
         </div>
         <div className="text-center mb-2">
           <a

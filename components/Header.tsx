@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useSettings } from '../context/SettingsContext';
 import { ShoppingCartIcon, UserIcon } from './icons';
@@ -46,15 +47,13 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, user, onLogout }) => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <button
-            className="flex items-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#2B6CB0] rounded-md"
-            onClick={() => onNavigate('home')}
+          <Link
+            to="/"
+            className="text-3xl font-black text-text-primary tracking-tighter hover:opacity-80 transition focus:outline-none focus:ring-2 focus:ring-[#2B6CB0] rounded-md flex items-center"
             aria-label={t('ir_inicio', 'Ir a la página de inicio')}
           >
-            <h1 className="text-3xl font-black text-text-primary tracking-tighter">
-              AP<span className="text-brand-primary">X</span>
-            </h1>
-          </button>
+            AP<span className="text-brand-primary">X</span>
+          </Link>
           
           {/* Right side actions */}
           <div className="flex items-center gap-4 md:gap-6">
