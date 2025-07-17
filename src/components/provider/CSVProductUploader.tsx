@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
 
-const REQUIRED_COLUMNS = ['nombre', 'precio', 'categoria', 'marca', 'SKU'];
+const REQUIRED_COLUMNS = [
+  'nombre',
+  'precio',
+  'marca',
+  'categoria',
+  'imagen_url',
+  'stock',
+  'SKU',
+  'proveedor_id'
+];
 
 function parseCSV(text: string) {
   const lines = text.trim().split(/\r?\n/);
@@ -18,7 +27,7 @@ function parseCSV(text: string) {
 }
 
 const CSVProductUploader: React.FC = () => {
-  const [csvData, setCsvData] = useState<Array<Record<string, string>>>([]);
+  const [products, setProducts] = useState<Array<Record<string, string>>>([]);
   const [error, setError] = useState<string | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,16 +39,16 @@ const CSVProductUploader: React.FC = () => {
       const result = parseCSV(text);
       if (result.error) {
         setError(result.error);
-        setCsvData([]);
+        setProducts([]);
       } else {
         setError(null);
-        setCsvData(result.data);
+        setProducts(result.data);
       }
     };
     reader.readAsText(file);
   };
 
-  // TODO: Integrar con Supabase o ERP al guardar productos
+  // TODO: Integrar con Supabase o APIs de ERP para guardar productos
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-md border mt-8 animate-fade-in">
@@ -51,18 +60,18 @@ const CSVProductUploader: React.FC = () => {
         className="mb-4 block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
       />
       {error && <div className="text-red-600 mb-4">{error}</div>}
-      {csvData.length > 0 && (
+      {products.length > 0 && (
         <div className="overflow-x-auto">
           <table className="min-w-full border text-sm">
             <thead>
               <tr>
-                {Object.keys(csvData[0]).map((col) => (
+                {Object.keys(products[0]).map((col) => (
                   <th key={col} className="px-3 py-2 bg-blue-50 text-blue-700 border-b">{col}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {csvData.map((row, idx) => (
+              {products.map((row, idx) => (
                 <tr key={idx} className="hover:bg-blue-50">
                   {Object.values(row).map((val, i) => (
                     <td key={i} className="px-3 py-2 border-b">{val}</td>
