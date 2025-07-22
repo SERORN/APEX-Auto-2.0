@@ -5,6 +5,7 @@ import CatalogView from './pages/CatalogView';
 import SignupView from './pages/SignupView';
 import SupplierView from './pages/SupplierView';
 import SignupLogin from './components/SignupLogin';
+import SignupPage from './components/SignupPage';
 
 const App = () => {
   return (
@@ -23,7 +24,7 @@ const App = () => {
 
       <Routes>
         <Route path="/catalog" element={<CatalogView />} />
-        <Route path="/signup" element={<SignupLogin />} />
+      <Route path="/signup" element={<SignupPage onSignup={() => window.location.href = '/'} />} />
         <Route path="/login" element={<SignupLogin />} />
         <Route path="/proveedor" element={<SupplierView />} />
         <Route

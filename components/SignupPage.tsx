@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import AuthGoogleButton from './AuthGoogleButton';
 import AuthMicrosoftButton from './AuthMicrosoftButton';
 import { supabase } from '../lib/supabaseClient';
+import { useNavigate } from 'react-router-dom';
 
 // Simple i18n hook (replace with your real i18n solution if available)
 const useT = () => {
@@ -33,6 +34,7 @@ const SignupPage: React.FC<{ onSignup: () => void }> = ({ onSignup }) => {
   const [role, setRole] = useState('cliente');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const validateEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -60,7 +62,10 @@ const SignupPage: React.FC<{ onSignup: () => void }> = ({ onSignup }) => {
       options: { data: { role } }
     });
     if (error) setError(error.message);
-    else onSignup();
+     else {
+       onSignup();
+       // navigate('/'); // Si prefieres usar navigate, descomenta esta línea y ajusta onSignup
+     }
     setLoading(false);
   };
 
