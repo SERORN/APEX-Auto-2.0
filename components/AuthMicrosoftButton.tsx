@@ -2,9 +2,10 @@ import { supabase } from '../lib/supabaseClient';
 
 const AuthMicrosoftButton = () => {
   const handleMicrosoftLogin = async () => {
+    // 🔧 FIX: Cambiar el valor de `redirectTo` a la URL base del sitio sin `/auth/callback` para evitar error 404 en Vercel.
     const redirectTo = import.meta.env.MODE === 'development'
-      ? 'http://localhost:5173/auth/callback'
-      : 'https://apex-auto-2-0.vercel.app/auth/callback';
+      ? 'http://localhost:5173/'
+      : 'https://apex-auto-2-0.vercel.app/';
 
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'azure',
