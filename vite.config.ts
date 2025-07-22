@@ -8,9 +8,9 @@ export default defineConfig(async ({ mode }) => {
   const env = loadEnv(mode, '.', '');
   const port = await detect(DEFAULT_PORT);
 
-  if (port !== DEFAULT_PORT) {
-    console.log(`⚠️ Puerto ${DEFAULT_PORT} en uso. Usando puerto alternativo: ${port}`);
-  }
+  // if (port !== DEFAULT_PORT) {
+  //   console.log(`⚠️ Puerto ${DEFAULT_PORT} en uso. Usando puerto alternativo: ${port}`);
+  // }
 
   return {
     define: {

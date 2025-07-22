@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useSettings } from '../context/SettingsContext';
 import { ShoppingCartIcon, UserIcon } from './icons';
+import CartWidget from './CartWidget';
 import { Language, Currency } from '../types';
 
 import { View } from '../types';
@@ -57,6 +58,16 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, user, onLogout }) => {
           
           {/* Right side actions */}
           <div className="flex items-center gap-4 md:gap-6">
+            {/* Mis pedidos link for authenticated users (desktop) */}
+            {user && (
+              <Link
+                to="/mis-pedidos"
+                className="text-text-secondary hover:text-brand-primary font-medium transition-colors duration-200 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2B6CB0]"
+                aria-label={t('mis_pedidos', 'Ver mis pedidos')}
+              >
+                {t('mis_pedidos', 'Mis pedidos')}
+              </Link>
+            )}
             <div className="hidden md:flex items-center gap-1 bg-subtle p-1 rounded-lg">
               <LanguageButton lang="es" label="ES" />
               <LanguageButton lang="en" label="EN" />
@@ -85,31 +96,31 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, user, onLogout }) => {
                 <span className="hidden md:block">{t('mi_cuenta', 'Mi Cuenta')}</span>
               </button>
             )}
-            <button
-              onClick={() => onNavigate('cart')}
-              className="relative flex items-center gap-2 text-text-secondary hover:text-brand-primary transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#2B6CB0] rounded-md"
-              aria-label={t('ver_carrito', 'Ver carrito de compras')}
-            >
-              <ShoppingCartIcon className="h-6 w-6" />
-              <span className="hidden md:block">{t('carrito', 'Carrito')}</span>
-              {itemCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-brand-primary text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center" aria-label={t('articulos_en_carrito', `Artículos en carrito: ${itemCount}`)}>
-                  {itemCount}
-                </span>
-              )}
-            </button>
+            <CartWidget />
           </div>
         </div>
          {/* Mobile settings */}
-         <div className="md:hidden flex items-center justify-center gap-4 pb-3">
+         <div className="md:hidden flex flex-col items-center gap-4 pb-3">
+            {/* Mis pedidos link for authenticated users (mobile) */}
+            {user && (
+              <Link to="/mis-pedidos" className="mt-2 block text-text-secondary font-semibold text-center px-4 py-2 rounded hover:bg-blue-100 transition">
+                {t('mis_pedidos', 'Mis pedidos')}
+              </Link>
+            )}
             <div className="flex items-center gap-1 bg-subtle p-1 rounded-lg">
               <LanguageButton lang="es" label="ES" />
               <LanguageButton lang="en" label="EN" />
             </div>
             <div className="flex items-center gap-1 bg-subtle p-1 rounded-lg">
               <CurrencyButton curr="mxn" label="MXN" />
-              <CurrencyButton curr="usd"label="USD" />
+              <CurrencyButton curr="usd" label="USD" />
             </div>
+            {/* Panel del Proveedor solo si el usuario es proveedor */}
+            {window.localStorage.getItem('user_role') === 'provider' && (
+              <Link to="/proveedor/dashboard" className="mt-2 block text-brand-primary font-semibold text-center px-4 py-2 rounded hover:bg-blue-100 transition">
+                Panel del Proveedor
+              </Link>
+            )}
           </div>
       </div>
     </header>

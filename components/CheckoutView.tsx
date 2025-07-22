@@ -1,5 +1,7 @@
 
 import React, { useState } from 'react';
+import { useCartToOrder } from '../src/hooks/useCartToOrder';
+import { useNavigate } from 'react-router-dom';
 import { View } from '../types';
 import { useCart } from '../context/CartContext';
 import { useSettings } from '../context/SettingsContext';
@@ -24,8 +26,9 @@ interface CheckoutViewProps {
 }
 
 const CheckoutView: React.FC<CheckoutViewProps> = ({ onNavigate }) => {
-  const { dispatch } = useCart();
   const { t } = useSettings();
+  const navigate = useNavigate();
+  const { canCheckout, checkout, loading, error } = useCartToOrder();
   const [isGuest, setIsGuest] = useState(true);
   const [formState, setFormState] = useState({
     email: '',
@@ -67,14 +70,18 @@ const CheckoutView: React.FC<CheckoutViewProps> = ({ onNavigate }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setCheckoutError(null);
     if (!validate()) return;
-    // --- BACKEND INTEGRATION POINT ---
-    // This is where you would integrate a real payment gateway.
-    console.log('Simulating payment with data:', formState);
-    dispatch({ type: 'CLEAR_CART' });
-    onNavigate('confirmation');
+    await checkout();
+    if (error) {
+      setCheckoutError(error);
+      return;
+    }
+    navigate('/confirmacion');
   };
 
   return (
@@ -110,10 +117,17 @@ const CheckoutView: React.FC<CheckoutViewProps> = ({ onNavigate }) => {
             <InputField id="cardCVC" name="cardCVC" label={t('card_cvc', 'CVC')} type="text" placeholder="***" value={formState.cardCVC} onChange={handleInputChange} required error={errors.cardCVC} autoComplete="cc-csc" inputMode="numeric" maxLength={4} />
           </div>
           <div className="pt-4">
-            <button type="submit" className="w-full bg-success text-white font-bold py-3 text-lg rounded-md hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
+            <button
+              type="submit"
+              className="w-full bg-success text-white font-bold py-3 text-lg rounded-md hover:bg-green-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+              disabled={!canCheckout || loading}
+            >
               <LockClosedIcon className="w-5 h-5"/>
-              {t('pay_order', 'Pagar y Realizar Pedido')}
+              {loading ? t('processing', 'Procesando...') : t('pay_order', 'Pagar y Realizar Pedido')}
             </button>
+            {checkoutError && (
+              <div className="mt-2 text-[#E53E3E] text-sm font-semibold">{checkoutError}</div>
+            )}
           </div>
         </div>
       </form>

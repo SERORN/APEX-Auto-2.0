@@ -1,3 +1,9 @@
+export enum ShippingStatus {
+  Pendiente = 'pendiente',
+  EnTransito = 'en_transito',
+  Entregado = 'entregado',
+  Cancelado = 'cancelado',
+}
 
 export interface VehicleCompatibility {
   brand: string;
@@ -6,7 +12,7 @@ export interface VehicleCompatibility {
 }
 
 export interface Product {
-  id: number;
+  id: string;
   sku: string;
   name: string;
   description: string;

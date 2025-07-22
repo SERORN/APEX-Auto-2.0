@@ -14,8 +14,15 @@ const SignupLogin: React.FC = () => {
     e.preventDefault();
     setError(null);
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) setError(error.message);
+    // Guardar rol en localStorage si es proveedor
+    if (data?.user?.user_metadata?.role === 'provider') {
+      window.localStorage.setItem('user_role', 'provider');
+      window.location.replace('/proveedor/dashboard');
+    } else if (data?.user) {
+      window.localStorage.setItem('user_role', data.user.user_metadata?.role || 'user');
+    }
     setLoading(false);
   };
 

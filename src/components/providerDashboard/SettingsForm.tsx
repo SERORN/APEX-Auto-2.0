@@ -1,3 +1,4 @@
+// SUGERENCIA: Este archivo es legacy y podría migrarse a la nueva estructura provider-dashboard/components.
 import React, { useEffect } from 'react';
 
 const SettingsForm = () => {

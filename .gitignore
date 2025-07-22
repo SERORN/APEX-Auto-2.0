@@ -1,1 +1,2 @@
 "node_modules\n.env.local\ndist\n.vscode" 
+node_modules
