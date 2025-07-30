@@ -1,12 +1,13 @@
 {
   "name": "tooth-pick",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "postinstall": "echo 'Dependencies installed successfully'",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
