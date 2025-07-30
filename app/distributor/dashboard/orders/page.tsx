@@ -266,7 +266,7 @@ export default function DistributorOrdersPage() {
                           {formatPrice(order.total, order.currency)}
                         </div>
                         <div className="text-xs text-gray-500">
-                          + {formatPrice(order.platformFee, order.currency)} ToothPick
+                          + {formatPrice(order.platformFee, order.currency)} Apex
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">

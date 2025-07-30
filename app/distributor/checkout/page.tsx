@@ -323,7 +323,7 @@ export default function CheckoutPage() {
                 <span>{formatPrice(cartState.totalAmount, 'MXN')}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span>Comisión ToothPick ({getFeePercentageString('b2b')}):</span>
+                <span>Comisión Apex ({getFeePercentageString('b2b')}):</span>
                 <span>{formatPrice(calculatePlatformFee(cartState.totalAmount, 'b2b'), 'MXN')}</span>
               </div>
               <div className="flex justify-between text-sm">

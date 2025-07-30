@@ -100,7 +100,7 @@ export default async function NewSupportTicketPage() {
               </div>
               <div>
                 <h4 className="font-medium text-gray-900">Email directo</h4>
-                <p className="text-sm text-gray-600">support@toothpick.com</p>
+                <p className="text-sm text-gray-600">support@apex.com</p>
               </div>
             </div>
           </div>

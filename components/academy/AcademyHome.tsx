@@ -239,10 +239,10 @@ export default function AcademyHome({
       <div className="text-center">
         <div className="flex items-center justify-center gap-3 mb-4">
           <GraduationCap className="h-10 w-10 text-blue-600" />
-          <h1 className="text-4xl font-bold text-gray-900">Academia ToothPick</h1>
+          <h1 className="text-4xl font-bold text-gray-900">Academia Apex</h1>
         </div>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          Aprende a dominar ToothPick con cursos interactivos diseñados para {getRoleLabel(userRole).toLowerCase()}s
+          Aprende a dominar Apex con cursos interactivos diseñados para {getRoleLabel(userRole).toLowerCase()}s
         </p>
       </div>
 

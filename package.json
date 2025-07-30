@@ -1,5 +1,5 @@
 {
-  "name": "tooth-pick",
+  "name": "apex",
   "version": "0.1.1",
   "private": true,
   "scripts": {
@@ -7,18 +7,20 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "echo 'Dependencies installed successfully'",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "postinstall": "echo 'Dependencies installed successfully'"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.10",
+    "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-scroll-area": "^1.2.9",
+    "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tabs": "^1.1.12",
     "@radix-ui/react-toast": "^1.2.14",
     "@radix-ui/react-tooltip": "^1.2.7",
+    "@types/bcryptjs": "^2.4.6",
     "@types/mongoose": "^5.11.96",
+    "bcryptjs": "^3.0.2",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "currency.js": "^2.0.4",
     "date-fns": "^4.1.0",
@@ -38,20 +40,13 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@faker-js/faker": "^9.9.0",
     "@tailwindcss/postcss": "^4",
-    "@types/jest": "^30.0.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "csv-writer": "^1.6.0",
-    "dotenv": "^17.2.1",
     "eslint": "^9",
     "eslint-config-next": "15.4.3",
-    "jest": "^30.0.5",
-    "mongodb-memory-server": "^10.1.4",
     "tailwindcss": "^4",
-    "ts-jest": "^29.4.0",
     "typescript": "^5"
   }
 }

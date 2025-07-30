@@ -52,7 +52,7 @@ export default function GamificationProfilePage() {
             <div>
               <h1 className="text-3xl font-bold">🎮 Mi Perfil de Gamificación</h1>
               <p className="text-muted-foreground mt-1">
-                Rastrea tu progreso y logros en ToothPick
+                Rastrea tu progreso y logros en Apex
               </p>
             </div>
             

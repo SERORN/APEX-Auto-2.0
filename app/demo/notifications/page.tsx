@@ -3,8 +3,8 @@ import { Metadata } from 'next';
 import NotificationDemo from '@/components/notifications/NotificationDemo';
 
 export const metadata: Metadata = {
-  title: 'Demo - Sistema de Notificaciones | ToothPick',
-  description: 'Prueba el sistema de notificaciones en tiempo real de ToothPick. Ve ejemplos de notificaciones de pedidos, verificación, soporte y más.',
+  title: 'Demo - Sistema de Notificaciones | Apex',
+  description: 'Prueba el sistema de notificaciones en tiempo real de Apex. Ve ejemplos de notificaciones de pedidos, verificación, soporte y más.',
   keywords: ['demo', 'notificaciones', 'prueba', 'sistema', 'tiempo real']
 };
 

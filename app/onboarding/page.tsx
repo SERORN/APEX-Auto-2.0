@@ -136,7 +136,7 @@ export default function OnboardingPage() {
       case 'distributor':
         return 'Distribuidor';
       case 'clinic':
-        return 'Clínica';
+        return 'Negocio';
       case 'admin':
         return 'Administrador';
       default:
@@ -221,7 +221,7 @@ export default function OnboardingPage() {
             <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
             <h2 className="text-2xl font-bold mb-2">¡Felicitaciones!</h2>
             <p className="text-gray-600 mb-6">
-              Has completado exitosamente el proceso de configuración de ToothPick.
+              Has completado exitosamente el proceso de configuración de Apex.
             </p>
             
             <div className="space-y-3">

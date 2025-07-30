@@ -1,36 +1,175 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Apex - Plataforma Fintech + Autopartes
 
-## Getting Started
+Plataforma moderna que combina servicios financieros (factoraje, crédito BNPL, facturación CFDI) con marketplace de autopartes, construida con Next.js 15 y MongoDB.
 
-First, run the development server:
+## ✨ Características Principales
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- 💰 **Wallet Digital** - Gestión completa de saldos, cashback y créditos
+- 📊 **Factoraje** - Adelanto de facturas con integración Konfío
+- 💳 **Crédito BNPL** - Líneas de crédito flexibles con Kueski
+- 🧾 **CFDI México** - Generación automática de facturas SAT
+- 🔐 **Autenticación** - Sistema multi-rol con NextAuth.js
+- 📱 **Responsive** - Diseño adaptable con Tailwind CSS
+
+## 🛠️ Stack Tecnológico
+
+- **Frontend**: Next.js 15.4.3 + React 19 + TypeScript
+- **Backend**: MongoDB + Mongoose + Next.js API Routes
+- **Autenticación**: NextAuth.js
+- **Estilos**: Tailwind CSS 4 + Radix UI
+- **Despliegue**: Vercel Ready
+
+## 🚀 Inicio Rápido
+
+### Prerrequisitos
+- Node.js 18+ 
+- MongoDB Atlas account
+- Variables de entorno configuradas
+
+### Instalación
+
+1. **Clonar el repositorio**
+   ```bash
+   git clone <repository-url>
+   cd apex
+   ```
+
+2. **Instalar dependencias**
+   ```bash
+   npm install
+   ```
+
+3. **Configurar variables de entorno**
+   ```bash
+   cp .env.example .env.local
+   # Editar .env.local con tus credenciales
+   ```
+
+4. **Ejecutar en desarrollo**
+   ```bash
+   npm run dev
+   ```
+
+5. **Abrir en navegador**
+   ```
+   http://localhost:3000
+   ```
+
+## 📁 Estructura del Proyecto
+
+```
+apex/
+├── app/                    # App Router (Next.js 15)
+│   ├── api/fintech/       # APIs REST del backend
+│   └── [locale]/          # Rutas internacionalizadas
+├── components/            # Componentes React reutilizables
+├── lib/                   # Utilidades y servicios
+│   ├── db.ts             # Conexión MongoDB
+│   └── partners/         # Integraciones fintech
+├── models/               # Modelos Mongoose
+├── public/               # Assets estáticos
+└── scripts/              # Scripts de utilidad
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🔧 Comandos Disponibles
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run dev         # Desarrollo con Turbopack
+npm run build       # Build de producción  
+npm run start       # Servidor de producción
+npm run lint        # Linting con ESLint
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🌐 APIs del Backend
 
-## Learn More
+### Fintech Endpoints
 
-To learn more about Next.js, take a look at the following resources:
+- `GET/POST/PATCH /api/fintech/wallet` - Gestión de billeteras
+- `GET/POST /api/fintech/request-factoring` - Factoraje de facturas  
+- `GET/POST /api/fintech/request-credit` - Líneas de crédito BNPL
+- `GET/POST/DELETE /api/fintech/generate-cfdi` - Facturas CFDI
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Ver documentación completa: [`README_BACKEND_COMPLETE.md`](./README_BACKEND_COMPLETE.md)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🔐 Variables de Entorno
 
-## Deploy on Vercel
+Configura estas variables en `.env.local`:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```env
+# Database
+MONGODB_URI=mongodb+srv://...
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Authentication  
+NEXTAUTH_SECRET=your-secret-key
+NEXTAUTH_URL=http://localhost:3000
+
+# Partners Fintech
+KONFIO_API_KEY=your-api-key
+KUESKI_CLIENT_ID=your-client-id  
+FACTURAMA_USERNAME=your-username
+
+# Company Data (for CFDI)
+COMPANY_RFC=your-rfc
+COMPANY_NAME=your-company-name
+```
+
+Ver todas las variables: [`.env.example`](./.env.example)
+
+## 📊 Base de Datos
+
+### Modelos Principales
+- **User** - Usuarios con KYC y scoring crediticio
+- **Wallet** - Billeteras digitales con crédito
+- **Transaction** - Historial de transacciones  
+- **Invoice** - Facturas con CFDI
+- **CreditLine** - Líneas de crédito BNPL
+
+## 🚀 Despliegue en Vercel
+
+1. **Push a GitHub**
+   ```bash
+   git add .
+   git commit -m "Deploy ready"
+   git push origin main
+   ```
+
+2. **Conectar en Vercel**
+   - Importar proyecto desde GitHub
+   - Configurar variables de entorno
+   - Deploy automático
+
+3. **Configurar MongoDB**
+   - Whitelist IPs de Vercel
+   - Actualizar NEXTAUTH_URL
+
+## 🧪 Testing
+
+```bash
+# Test APIs manualmente
+node scripts/test-apis.js
+
+# Verificar build
+npm run build && npm start
+```
+
+## 📝 Contribuir
+
+1. Fork el proyecto
+2. Crear rama feature (`git checkout -b feature/AmazingFeature`)
+3. Commit cambios (`git commit -m 'Add AmazingFeature'`)
+4. Push a rama (`git push origin feature/AmazingFeature`)
+5. Abrir Pull Request
+
+## 📞 Soporte
+
+- 📖 **Documentación**: [README_BACKEND_COMPLETE.md](./README_BACKEND_COMPLETE.md)
+- 🐛 **Issues**: GitHub Issues
+- 💬 **Contacto**: [tu-email@apex.com]
+
+## 📄 Licencia
+
+Este proyecto es privado y propietario.
+
+---
+
+**Desarrollado con ❤️ por el equipo Apex**

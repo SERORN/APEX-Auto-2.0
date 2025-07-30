@@ -17,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Tooth Pick - Sistema Dental",
-  description: "Plataforma de gestión dental con múltiples roles",
+  title: "Apex - Sistema Fintech",
+  description: "Plataforma fintech y marketplace híbrido",
 };
 
 export default function RootLayout({

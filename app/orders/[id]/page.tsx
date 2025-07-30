@@ -363,7 +363,7 @@ export default function OrderDetailPage() {
                 </div>
                 
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Comisión ToothPick:</span>
+                  <span className="text-gray-600">Comisión Apex:</span>
                   <span className="font-medium text-blue-600">{formatPrice(order.platformFee, order.currency)}</span>
                 </div>
                 
@@ -382,7 +382,7 @@ export default function OrderDetailPage() {
                     {formatPrice(order.subtotal, order.currency)}
                   </p>
                   <p className="text-xs text-gray-500 mt-1">
-                    (Sin incluir comisión ToothPick)
+                    (Sin incluir comisión Apex)
                   </p>
                 </div>
               )}

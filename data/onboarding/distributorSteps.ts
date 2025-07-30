@@ -5,7 +5,7 @@ export const distributorSteps: OnboardingStepData[] = [
   {
     id: 'welcome-distributor',
     title: 'Bienvenido, Distribuidor',
-    description: 'Descubre cómo expandir tu red comercial con ToothPick',
+    description: 'Descubre cómo expandir tu red comercial con Apex',
     component: 'WelcomeStep',
     isCompleted: false,
     isOptional: false,
@@ -80,7 +80,7 @@ export const distributorSteps: OnboardingStepData[] = [
   {
     id: 'distributor-providers',
     title: 'Conectar con Proveedores',
-    description: 'Busca y conecta con proveedores de productos dentales',
+    description: 'Busca y conecta con proveedores de productos automotrices y financieros',
     component: 'ProvidersStep',
     isCompleted: false,
     isOptional: false,

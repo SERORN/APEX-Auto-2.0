@@ -10,18 +10,18 @@ import { LocaleQuickSettings, LocaleStatus } from '@/components/locale/LocaleSel
 const sampleData = {
   orders: [
     { id: '001', date: new Date('2025-01-15'), amount: 150.50, status: 'delivered', customer: 'Dr. García' },
-    { id: '002', date: new Date('2025-01-20'), amount: 89.99, status: 'pending', customer: 'Clínica Dental Norte' },
+    { id: '002', date: new Date('2025-01-20'), amount: 89.99, status: 'pending', customer: 'AutoPartes del Norte' },
     { id: '003', date: new Date('2025-01-25'), amount: 299.00, status: 'processing', customer: 'Dr. Silva' }
   ],
   appointments: [
-    { id: '1', date: new Date('2025-01-28'), patient: 'María González', treatment: 'Limpieza dental' },
-    { id: '2', date: new Date('2025-01-29'), patient: 'Carlos Mendoza', treatment: 'Endodoncia' },
-    { id: '3', date: new Date('2025-01-30'), patient: 'Ana Ruiz', treatment: 'Ortodoncia' }
+    { id: '1', date: new Date('2025-01-28'), patient: 'María González', treatment: 'Inversión en fondos' },
+    { id: '2', date: new Date('2025-01-29'), patient: 'Carlos Mendoza', treatment: 'Mantenimiento preventivo' },
+    { id: '3', date: new Date('2025-01-30'), patient: 'Ana Ruiz', treatment: 'Seguro vehicular' }
   ],
   products: [
-    { id: 'P001', name: 'Kit de Blanqueamiento', price: 45.99, category: 'Estética' },
-    { id: 'P002', name: 'Resina Compuesta', price: 128.50, category: 'Materiales' },
-    { id: 'P003', name: 'Anestesia Local', price: 89.90, category: 'Farmacología' }
+    { id: 'P001', name: 'Fondo de Inversión Moderado', price: 1000.00, category: 'Inversiones' },
+    { id: 'P002', name: 'Filtro de Aceite Premium', price: 128.50, category: 'Autopartes' },
+    { id: 'P003', name: 'Seguro de Vida Familiar', price: 890.00, category: 'Seguros' }
   ],
   statistics: {
     totalRevenue: 15420.80,
@@ -72,7 +72,7 @@ export default function LocalizationDemo() {
         date: 'Fecha',
         amount: 'Monto',
         patient: 'Paciente',
-        treatment: 'Tratamiento',
+        treatment: 'Servicio',
         time: 'Hora',
         name: 'Nombre',
         price: 'Precio',
@@ -183,7 +183,7 @@ export default function LocalizationDemo() {
         {/* Header con selectores de idioma y moneda */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">ToothPick i18n Demo</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Apex i18n Demo</h1>
             <p className="text-gray-600 mt-2">
               Demostración completa del sistema de internacionalización y multimoneda
             </p>

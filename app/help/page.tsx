@@ -110,7 +110,7 @@ export default function HelpPage() {
               </Button>
               <Button
                 variant="outline"
-                onClick={() => window.location.href = 'mailto:soporte@toothpick.com'}
+                onClick={() => window.location.href = 'mailto:soporte@apex.com'}
               >
                 Contactar por Email
               </Button>

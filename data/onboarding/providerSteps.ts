@@ -23,8 +23,8 @@ export const providerSteps: OnboardingStepData[] = [
   // FASE 1: PERFIL
   {
     id: 'welcome-provider',
-    title: 'Bienvenido a ToothPick',
-    description: 'Descubre cómo ToothPick transformará tu negocio dental',
+    title: 'Bienvenido a Apex',
+    description: 'Descubre cómo Apex transformará tu negocio financiero',
     component: 'WelcomeStep',
     isCompleted: false,
     isOptional: false,
@@ -140,7 +140,7 @@ export const providerSteps: OnboardingStepData[] = [
   {
     id: 'provider-erp-integration',
     title: 'Conectar Sistema ERP',
-    description: 'Integra tu ERP existente con ToothPick',
+    description: 'Integra tu sistema existente con Apex',
     component: 'ERPIntegrationStep',
     isCompleted: false,
     isOptional: true,

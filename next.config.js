@@ -1,11 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  i18n: {
-    locales: ['es', 'en', 'pt'],
-    defaultLocale: 'es',
-  },
+  // i18n configuration removed for App Router
+  // Use next-intl for App Router internationalization
   experimental: {
-    serverActions: true,
+    // serverActions is now stable in Next.js 15
   },
 };
 

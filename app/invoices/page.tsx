@@ -10,7 +10,7 @@ export default function InvoicesPage() {
               Gestión de Facturas CFDI
             </h1>
             <p className="mt-2 text-gray-600">
-              Administra todas las facturas electrónicas emitidas por ToothPick
+              Administra todas las facturas electrónicas emitidas por Apex
             </p>
           </div>
           

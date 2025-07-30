@@ -79,10 +79,10 @@ export default async function SupportPage() {
                 Para consultas urgentes, contáctanos directamente.
               </p>
               <a 
-                href="mailto:support@toothpick.com"
+                href="mailto:support@apex.com"
                 className="text-purple-600 hover:text-purple-800 text-sm font-medium"
               >
-                support@toothpick.com
+                support@apex.com
               </a>
             </div>
           </div>
@@ -137,7 +137,7 @@ export default async function SupportPage() {
                 📞 +1 (555) 123-4567
               </span>
               <span className="text-blue-600 text-sm">
-                ✉️ support@toothpick.com
+                ✉️ support@apex.com
               </span>
             </div>
           </div>
