@@ -1,0 +1,191 @@
+# Production Docker Compose for Apex Platform
+version: '3.8'
+
+networks:
+  apex-network:
+    driver: bridge
+  traefik:
+    external: true
+
+volumes:
+  postgres_data:
+  redis_data:
+  uploads:
+  ssl_certs:
+
+services:
+  # Reverse Proxy with SSL
+  traefik:
+    image: traefik:v3.0
+    container_name: apex_traefik
+    command:
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.letsencrypt.acme.email=admin@apex.com.mx"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ssl_certs:/letsencrypt
+    networks:
+      - traefik
+      - apex-network
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`traefik.apex.com.mx`)"
+      - "traefik.http.routers.api.tls.certresolver=letsencrypt"
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: apex_postgres_prod
+    environment:
+      POSTGRES_DB: apex_db
+      POSTGRES_USER: apex_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend-python/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - apex-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U apex_user -d apex_db"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Redis
+  redis:
+    image: redis:7-alpine
+    container_name: apex_redis_prod
+    volumes:
+      - redis_data:/data
+    networks:
+      - apex-network
+    restart: unless-stopped
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+
+  # Backend API
+  backend:
+    image: apex/backend:latest
+    container_name: apex_backend_prod
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://apex_user:${POSTGRES_PASSWORD}@postgres:5432/apex_db
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379/0
+      - DEBUG=False
+      - SECRET_KEY=${SECRET_KEY}
+      - FRONTEND_URL=https://app.apex.com.mx
+      - SENTRY_DSN=${SENTRY_DSN}
+    volumes:
+      - uploads:/app/uploads
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - apex-network
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`api.apex.com.mx`)"
+      - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.backend.loadbalancer.server.port=8000"
+
+  # Frontend App
+  frontend:
+    image: apex/frontend:latest
+    container_name: apex_frontend_prod
+    environment:
+      - NEXT_PUBLIC_API_URL=https://api.apex.com.mx/api/v1
+      - NEXT_PUBLIC_APP_URL=https://app.apex.com.mx
+      - NEXTAUTH_URL=https://app.apex.com.mx
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+    depends_on:
+      - backend
+    networks:
+      - apex-network
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`app.apex.com.mx`)"
+      - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
+
+  # Landing Page
+  landing:
+    image: apex/landing:latest
+    container_name: apex_landing_prod
+    networks:
+      - apex-network
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.landing.rule=Host(`apex.com.mx`) || Host(`www.apex.com.mx`)"
+      - "traefik.http.routers.landing.tls.certresolver=letsencrypt"
+      - "traefik.http.services.landing.loadbalancer.server.port=3000"
+      # Redirect www to non-www
+      - "traefik.http.middlewares.www-redirect.redirectregex.regex=^https?://www\\.apex\\.com\\.mx/(.*)"
+      - "traefik.http.middlewares.www-redirect.redirectregex.replacement=https://apex.com.mx/$${1}"
+      - "traefik.http.routers.landing.middlewares=www-redirect"
+
+  # Database Backup
+  db_backup:
+    image: prodrigestivill/postgres-backup-local:15
+    container_name: apex_db_backup
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=apex_db
+      - POSTGRES_USER=apex_user
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - BACKUP_KEEP_DAYS=30
+      - BACKUP_KEEP_WEEKS=8
+      - BACKUP_KEEP_MONTHS=6
+      - HEALTHCHECK_PORT=8080
+    volumes:
+      - ./backups:/backups
+    depends_on:
+      - postgres
+    networks:
+      - apex-network
+    restart: unless-stopped
+
+  # Monitoring Stack
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: apex_prometheus_prod
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - apex-network
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.prometheus.rule=Host(`prometheus.apex.com.mx`)"
+      - "traefik.http.routers.prometheus.tls.certresolver=letsencrypt"
+      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: apex_grafana_prod
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      - GF_SERVER_ROOT_URL=https://grafana.apex.com.mx
+    volumes:
+      - ./monitoring/grafana:/etc/grafana/provisioning
+    networks:
+      - apex-network
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.apex.com.mx`)"
+      - "traefik.http.routers.grafana.tls.certresolver=letsencrypt"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
